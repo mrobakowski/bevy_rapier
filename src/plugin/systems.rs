@@ -1363,8 +1363,8 @@ mod tests {
         app.add_event::<CollisionEvent>()
             .add_system(update_colliding_entities);
 
-        let entity1 = app.world.spawn().insert(CollidingEntities::default()).id();
-        let entity2 = app.world.spawn().insert(CollidingEntities::default()).id();
+        let entity1 = app.world.spawn(CollidingEntities::default()).id();
+        let entity2 = app.world.spawn(CollidingEntities::default()).id();
 
         let mut collision_events = app
             .world
@@ -1455,8 +1455,7 @@ mod tests {
 
         let entity = app
             .world
-            .spawn()
-            .insert(AsyncCollider {
+            .spawn(AsyncCollider {
                 handle: cube,
                 shape: ComputedColliderShape::TriMesh,
             })
@@ -1485,16 +1484,10 @@ mod tests {
         let mut meshes = app.world.resource_mut::<Assets<Mesh>>();
         let cube_handle = meshes.add(Cube::default().into());
         let capsule_handle = meshes.add(Capsule::default().into());
-        let cube = app
-            .world
-            .spawn()
-            .insert(Name::new("Cube"))
-            .insert(cube_handle)
-            .id();
+        let cube = app.world.spawn(Name::new("Cube")).insert(cube_handle).id();
         let capsule = app
             .world
-            .spawn()
-            .insert(Name::new("Capsule"))
+            .spawn(Name::new("Capsule"))
             .insert(capsule_handle)
             .id();
 
@@ -1505,8 +1498,7 @@ mod tests {
         named_shapes.insert("Capsule".to_string(), None);
         let parent = app
             .world
-            .spawn()
-            .insert(AsyncSceneCollider {
+            .spawn(AsyncSceneCollider {
                 handle: scene,
                 shape: Some(ComputedColliderShape::TriMesh),
                 named_shapes,
@@ -1558,15 +1550,13 @@ mod tests {
         for (child_transform, parent_transform) in [zero, same, different] {
             let child = app
                 .world
-                .spawn()
-                .insert_bundle(TransformBundle::from(child_transform))
+                .spawn(TransformBundle::from(child_transform))
                 .insert(RigidBody::Fixed)
                 .insert(Collider::ball(1.0))
                 .id();
 
             app.world
-                .spawn()
-                .insert_bundle(TransformBundle::from(parent_transform))
+                .spawn(TransformBundle::from(parent_transform))
                 .push_children(&[child]);
 
             app.update();
@@ -1616,15 +1606,13 @@ mod tests {
         for (child_transform, parent_transform) in [zero, same, different] {
             let child = app
                 .world
-                .spawn()
-                .insert_bundle(TransformBundle::from(child_transform))
+                .spawn(TransformBundle::from(child_transform))
                 .insert(Collider::ball(1.0))
                 .id();
 
             let parent = app
                 .world
-                .spawn()
-                .insert_bundle(TransformBundle::from(parent_transform))
+                .spawn(TransformBundle::from(parent_transform))
                 .insert(RigidBody::Fixed)
                 .push_children(&[child])
                 .id();
@@ -1680,6 +1668,7 @@ mod tests {
             .add_plugin(WindowPlugin::default())
             .add_plugin(AssetPlugin::default())
             .add_plugin(ScenePlugin::default())
+            .add_plugin(ImagePlugin::default())
             .add_plugin(RenderPlugin::default());
         }
     }

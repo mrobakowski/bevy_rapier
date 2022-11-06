@@ -44,6 +44,7 @@ impl Stats {
     }
 }
 
+#[derive(Resource)]
 struct Game {
     n_lanes: usize,
     n_rows: usize,
@@ -88,7 +89,7 @@ fn setup_game(mut commands: Commands, mut game: ResMut<Game>) {
         byte_rgb(255, 0, 0),
     ];
 
-    commands.spawn().insert_bundle(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle::default());
 
     setup_board(&mut commands, &*game);
 
@@ -127,7 +128,7 @@ fn setup_board(commands: &mut Commands, game: &Game) {
 
     // Add floor
     commands
-        .spawn_bundle(SpriteBundle {
+        .spawn(SpriteBundle {
             sprite: Sprite {
                 color: Color::rgb(0.5, 0.5, 0.5),
                 custom_size: Some(Vec2::new(game.n_lanes as f32 * 30.0, 60.0)),
@@ -168,8 +169,7 @@ fn spawn_cube(commands: &mut Commands, game: &mut Game) {
             .entity(block_entities[*j])
             .with_children(|children| {
                 let id = children
-                    .spawn()
-                    .insert(ImpulseJoint::new(
+                    .spawn(ImpulseJoint::new(
                         block_entities[*i],
                         RevoluteJointBuilder::new()
                             .local_anchor1(anchor_1)
@@ -199,7 +199,7 @@ fn spawn_block(
     let linear_damping = 3.0;
 
     commands
-        .spawn_bundle(SpriteBundle {
+        .spawn(SpriteBundle {
             sprite: Sprite {
                 color: game.cube_colors[kind as usize],
                 custom_size: Some(Vec2::new(30.0, 30.0)),

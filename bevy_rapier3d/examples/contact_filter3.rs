@@ -45,7 +45,7 @@ fn main() {
 }
 
 fn setup_graphics(mut commands: Commands) {
-    commands.spawn_bundle(Camera3dBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(-30.0, 30.0, 100.0)
             .looking_at(Vec3::new(0.0, 10.0, 0.0), Vec3::Y),
         ..Default::default()
@@ -63,12 +63,12 @@ pub fn setup_physics(mut commands: Commands) {
     let ground_size = 10.0;
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(0.0, -10.0, 0.0)))
+        .spawn(TransformBundle::from(Transform::from_xyz(0.0, -10.0, 0.0)))
         .insert(Collider::cuboid(ground_size, 1.2, ground_size))
         .insert(CustomFilterTag::GroupA);
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(0.0, 0.0, 0.0)))
+        .spawn(TransformBundle::from(Transform::from_xyz(0.0, 0.0, 0.0)))
         .insert(Collider::cuboid(ground_size, 1.2, ground_size))
         .insert(CustomFilterTag::GroupB);
 
@@ -92,7 +92,7 @@ pub fn setup_physics(mut commands: Commands) {
             group_id += 1;
 
             commands
-                .spawn_bundle(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
+                .spawn(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
                 .insert(RigidBody::Dynamic)
                 .insert(Collider::cuboid(rad, rad, rad))
                 .insert(ActiveHooks::FILTER_CONTACT_PAIRS)

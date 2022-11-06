@@ -18,7 +18,7 @@ fn main() {
 }
 
 fn setup_graphics(mut commands: Commands) {
-    commands.spawn_bundle(Camera3dBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(15.0, 5.0, 42.0)
             .looking_at(Vec3::new(13.0, 1.0, 1.0), Vec3::Y),
         ..Default::default()
@@ -30,7 +30,7 @@ fn create_prismatic_joints(commands: &mut Commands, origin: Vect, num: usize) {
     let shift = 1.0;
 
     let mut curr_parent = commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             origin.x, origin.y, origin.z,
         )))
         .insert(RigidBody::Fixed)
@@ -52,7 +52,7 @@ fn create_prismatic_joints(commands: &mut Commands, origin: Vect, num: usize) {
         let joint = ImpulseJoint::new(curr_parent, prism);
 
         curr_parent = commands
-            .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+            .spawn(TransformBundle::from(Transform::from_xyz(
                 origin.x,
                 origin.y,
                 origin.z + dz,
@@ -69,7 +69,7 @@ fn create_revolute_joints(commands: &mut Commands, origin: Vec3, num: usize) {
     let shift = 2.0;
 
     let mut curr_parent = commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             origin.x, origin.y, 0.0,
         )))
         .insert(RigidBody::Fixed)
@@ -89,7 +89,7 @@ fn create_revolute_joints(commands: &mut Commands, origin: Vec3, num: usize) {
         let mut handles = [curr_parent; 4];
         for k in 0..4 {
             handles[k] = commands
-                .spawn_bundle(TransformBundle::from(Transform::from_translation(
+                .spawn(TransformBundle::from(Transform::from_translation(
                     positions[k],
                 )))
                 .insert(RigidBody::Dynamic)
@@ -146,7 +146,7 @@ fn create_fixed_joints(commands: &mut Commands, origin: Vec3, num: usize) {
             };
 
             let child_entity = commands
-                .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+                .spawn(TransformBundle::from(Transform::from_xyz(
                     origin.x + fk * shift,
                     origin.y,
                     origin.z + fi * shift,
@@ -164,8 +164,7 @@ fn create_fixed_joints(commands: &mut Commands, origin: Vec3, num: usize) {
                     //       we need to add the components to children of the entity. Otherwise
                     //       the second joint component would just overwrite the first one.
                     children
-                        .spawn()
-                        .insert(ImpulseJoint::new(parent_entity, joint));
+                        .spawn(ImpulseJoint::new(parent_entity, joint));
                 });
             }
 
@@ -179,8 +178,7 @@ fn create_fixed_joints(commands: &mut Commands, origin: Vec3, num: usize) {
                     //       we need to add the components to children of the entity. Otherwise
                     //       the second joint component would just overwrite the first one.
                     children
-                        .spawn()
-                        .insert(ImpulseJoint::new(parent_entity, joint));
+                        .spawn(ImpulseJoint::new(parent_entity, joint));
                 });
             }
 
@@ -207,7 +205,7 @@ fn create_ball_joints(commands: &mut Commands, num: usize) {
             };
 
             let child_entity = commands
-                .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+                .spawn(TransformBundle::from(Transform::from_xyz(
                     fk * shift,
                     0.0,
                     fi * shift,
@@ -225,8 +223,7 @@ fn create_ball_joints(commands: &mut Commands, num: usize) {
                     //       we need to add the components to children of the entity. Otherwise
                     //       the second joint component would just overwrite the first one.
                     children
-                        .spawn()
-                        .insert(ImpulseJoint::new(parent_entity, joint));
+                        .spawn(ImpulseJoint::new(parent_entity, joint));
                 });
             }
 
@@ -240,8 +237,7 @@ fn create_ball_joints(commands: &mut Commands, num: usize) {
                     //       we need to add the components to children of the entity. Otherwise
                     //       the second joint component would just overwrite the first one.
                     children
-                        .spawn()
-                        .insert(ImpulseJoint::new(parent_entity, joint));
+                        .spawn(ImpulseJoint::new(parent_entity, joint));
                 });
             }
 

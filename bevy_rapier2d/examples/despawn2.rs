@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
-#[derive(Default)]
+#[derive(Default, Resource)]
 pub struct DespawnResource {
     pub entities: Vec<Entity>,
 }
 
-#[derive(Default)]
+#[derive(Default, Resource)]
 pub struct ResizeResource {
     pub entities: Vec<Entity>,
 }
@@ -32,7 +32,7 @@ fn main() {
 }
 
 fn setup_graphics(mut commands: Commands) {
-    commands.spawn_bundle(Camera2dBundle {
+    commands.spawn(Camera2dBundle {
         transform: Transform::from_xyz(0.0, 20.0, 0.0),
         ..default()
     });
@@ -49,13 +49,12 @@ pub fn setup_physics(
     let ground_size = 250.0;
 
     let entity = commands
-        .spawn()
-        .insert(Collider::cuboid(ground_size, 12.0))
+        .spawn(Collider::cuboid(ground_size, 12.0))
         .id();
     despawn.entities.push(entity);
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             ground_size,
             ground_size * 2.0,
             0.0,
@@ -63,7 +62,7 @@ pub fn setup_physics(
         .insert(Collider::cuboid(12.0, ground_size * 2.0));
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             -ground_size,
             ground_size * 2.0,
             0.0,
@@ -86,7 +85,7 @@ pub fn setup_physics(
             let y = j as f32 * shift + centery + 2.0;
 
             let entity = commands
-                .spawn_bundle(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
+                .spawn(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
                 .insert(RigidBody::Dynamic)
                 .insert(Collider::cuboid(rad, rad))
                 .id();
@@ -99,7 +98,7 @@ pub fn setup_physics(
 }
 
 pub fn despawn(mut commands: Commands, time: Res<Time>, mut despawn: ResMut<DespawnResource>) {
-    if time.seconds_since_startup() > 5.0 {
+    if time.elapsed_seconds() > 5.0 {
         for entity in &despawn.entities {
             println!("Despawning ground entity");
             commands.entity(*entity).despawn();
@@ -109,7 +108,7 @@ pub fn despawn(mut commands: Commands, time: Res<Time>, mut despawn: ResMut<Desp
 }
 
 pub fn resize(mut commands: Commands, time: Res<Time>, mut resize: ResMut<ResizeResource>) {
-    if time.seconds_since_startup() > 6.0 {
+    if time.elapsed_seconds() > 6.0 {
         for entity in &resize.entities {
             println!("Resizing a block");
             commands

@@ -18,7 +18,7 @@ fn main() {
 }
 
 fn setup_graphics(mut commands: Commands) {
-    commands.spawn_bundle(Camera3dBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(-30.0, 30.0, 100.0)
             .looking_at(Vec3::new(0.0, 10.0, 0.0), Vec3::Y),
         ..Default::default()
@@ -33,7 +33,7 @@ pub fn setup_physics(mut commands: Commands) {
     let ground_height = 0.1;
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             0.0,
             -ground_height,
             0.0,
@@ -69,15 +69,14 @@ pub fn setup_physics(mut commands: Commands) {
 
                 // Crate a rigid-body with multiple colliders attached, using Bevy hierarchy.
                 commands
-                    .spawn_bundle(TransformBundle::from(Transform::from_xyz(x, y, z)))
+                    .spawn(TransformBundle::from(Transform::from_xyz(x, y, z)))
                     .insert(RigidBody::Dynamic)
                     .with_children(|children| {
                         children
-                            .spawn()
-                            .insert(Collider::cuboid(rad * 10.0, rad, rad))
+                            .spawn(Collider::cuboid(rad * 10.0, rad, rad))
                             .insert(ColliderDebugColor(colors[color % 3]));
                         children
-                            .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+                            .spawn(TransformBundle::from(Transform::from_xyz(
                                 rad * 10.0,
                                 rad * 10.0,
                                 0.0,
@@ -85,7 +84,7 @@ pub fn setup_physics(mut commands: Commands) {
                             .insert(Collider::cuboid(rad, rad * 10.0, rad))
                             .insert(ColliderDebugColor(colors[color % 3]));
                         children
-                            .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+                            .spawn(TransformBundle::from(Transform::from_xyz(
                                 -rad * 10.0,
                                 rad * 10.0,
                                 0.0,

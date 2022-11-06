@@ -59,7 +59,7 @@ pub enum ComputedColliderShape {
     /// Triangle-mesh.
     TriMesh,
     /// Convex decomposition.
-    ConvexDecomposition(VHACDParameters),
+    ConvexDecomposition(#[reflect(ignore)] VHACDParameters), // TODO: is this safe to ignore
 }
 
 /// A geometric entity that can be attached to a body so it can be affected by contacts

@@ -73,6 +73,7 @@ impl RapierDebugRenderPlugin {
     }
 }
 
+#[derive(Resource)]
 /// Context to control some aspect of the debug-renderer after initialization.
 pub struct DebugRenderContext {
     /// Is the debug-rendering currently enabled?

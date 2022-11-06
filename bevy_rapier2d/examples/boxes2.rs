@@ -18,7 +18,7 @@ fn main() {
 }
 
 fn setup_graphics(mut commands: Commands) {
-    commands.spawn_bundle(Camera2dBundle {
+    commands.spawn(Camera2dBundle {
         transform: Transform::from_xyz(0.0, 20.0, 0.0),
         ..default()
     });
@@ -32,7 +32,7 @@ pub fn setup_physics(mut commands: Commands) {
     let ground_height = 10.0;
 
     commands
-        .spawn_bundle(TransformBundle::from(Transform::from_xyz(
+        .spawn(TransformBundle::from(Transform::from_xyz(
             0.0,
             0.0 * -ground_height,
             0.0,
@@ -57,7 +57,7 @@ pub fn setup_physics(mut commands: Commands) {
             let y = j as f32 * shift + centery + 30.0;
 
             commands
-                .spawn_bundle(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
+                .spawn(TransformBundle::from(Transform::from_xyz(x, y, 0.0)))
                 .insert(RigidBody::Dynamic)
                 .insert(Collider::cuboid(rad, rad));
         }
