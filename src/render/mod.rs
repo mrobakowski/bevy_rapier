@@ -8,6 +8,7 @@ pub use rapier::pipeline::{DebugRenderMode, DebugRenderStyle};
 use std::fmt::Debug;
 
 mod lines;
+pub use lines::DebugLinesMesh;
 
 /// The color of a collider when using the debug-renderer.
 ///
